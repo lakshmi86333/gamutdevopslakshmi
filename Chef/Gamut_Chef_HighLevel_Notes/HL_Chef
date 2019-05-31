@@ -33,6 +33,9 @@ ChefDK Installation:
 2. Install the debian package using
 	sudo dpkg -i chefdk_1.3.43-1_amd64.deb
 
+(go to Downloads folder and try to install the chefdk_1.3.43-1_amd64.deb package
+Ex:-lakshmi@lakshmi-ubuntu-3578:~/Downloads$ sudo dpkg -i chefdk_1.3.43-1_amd64.deb)
+
 3. Verify the installation
 	$ chef --version
 
