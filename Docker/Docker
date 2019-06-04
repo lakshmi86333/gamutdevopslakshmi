@@ -36,9 +36,11 @@ Requirements:
 	- 64-bit architecture	  
 	- Linux 3.8 or later Kernel versions
 
+(Docker it supports only 64-bit linux machine)
+
 
 #
-Requirements Check:
+Requirements Check: 
 - Check Kernel version
 	$ uname -a Or -r
 
