@@ -58,6 +58,7 @@ Installation Steps:
 
 # Install docker dependencies
 	$ sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+
 (https://phoenixnap.com/kb/how-to-install-docker-on-ubuntu-18-04 -- link to find for installtion steps)
 
 # Add GPG key to apt repository
@@ -69,7 +70,7 @@ Installation Steps:
 # Update apt package index:
 	$ sudo apt-get update
 	
-# Install Latest version of Docker
+# Install Latest version of Docker 
 	$ sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 
