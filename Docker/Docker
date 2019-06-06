@@ -58,6 +58,7 @@ Installation Steps:
 
 # Install docker dependencies
 	$ sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+(https://phoenixnap.com/kb/how-to-install-docker-on-ubuntu-18-04 -- link to find for installtion steps)
 
 # Add GPG key to apt repository
 	$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
