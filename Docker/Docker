@@ -80,7 +80,7 @@ sudo docker --version
 
 #
 uninstall docker:
-$ sudo apt-get remove docker-ce
+$ sudo apt-get remove docker-cedo docker
 $ sudo rm -rf /var/lib/docker (Removes all containers and images)
 
 
@@ -147,6 +147,8 @@ $ service ssh start (status/stop)
 - Create an user and set up password
 $ useradd -m -d /home/gamut -s /bin/bash gamut
 $ passwd gamut
+
+(my system credentials for useradd password:lakshmi)
 	
 - Connect to the container using ssh from 172.17.0.2 or any other machine.
 $ ssh gamut@172.17.0.3
