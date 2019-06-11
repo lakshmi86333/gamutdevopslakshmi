@@ -110,6 +110,12 @@ $ sudo docker run -it ubuntu /bin/bash
 	/bin/bash: shell program that will be installed in the terminal.
 
 
+- Create an user and set up password
+$ useradd -m -d /home/gamut -s /bin/bash gamut
+$ passwd gamut
+
+(my system credentials for useradd password:lakshmi)
+	
 
 # Inspect the new container.. Let's beleive that it's separate machine
 1.
@@ -130,6 +136,9 @@ $ sudo docker run -it ubuntu /bin/bash
 # SSH setup for containers
 Setup SSH in the containers so that they can communicate to each other
 
+- Connect to the container using ssh from 172.17.0.2 or any other machine.
+$ ssh gamut@172.17.0.3
+
 - Create two containers
 		172.17.0.2
 		172.17.0.3
@@ -144,16 +153,6 @@ $ apt-get install openssh-server
 $ service ssh start (status/stop)
 
 
-- Create an user and set up password
-$ useradd -m -d /home/gamut -s /bin/bash gamut
-$ passwd gamut
-
-(my system credentials for useradd password:lakshmi)
-	
-- Connect to the container using ssh from 172.17.0.2 or any other machine.
-$ ssh gamut@172.17.0.3
-
-
 #
 Shotdown a container
 "exit" to stop the container
@@ -163,6 +162,9 @@ wk-10:30 am
 ---
 # List all containers(stopped and running)
 $ sudo docker cotainer ls -a
+
+(# list containers only running
+$ sudo docker container ls)
 
 # List running containers only
 	sudo docker cotainer ls

@@ -14,7 +14,7 @@ Install SSH so that other machines can connect to this jenkins server
 	$ apt-get update
 	$ apt-get install openssh-server
 	$ service ssh start (Start ssh server)
-
+t
 Install vim utility also for editing files
 	$ apt-get install vim
 
@@ -30,6 +30,7 @@ Install vim utility also for editing files
 
 - Extract both the packages using below command
 	$ tar -zxvf <package-name>
+	(Ex: - $ tar -zxvf apache-tomcat-8.5.34.tar.gz)
 
 #
 set JAVA_HOME environmemnt variable in $USER_HOME/.bashrc (i.e /root/.bashrc)
