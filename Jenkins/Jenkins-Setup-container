@@ -32,6 +32,9 @@ Install vim utility also for editing files
 	$ tar -zxvf <package-name>
 	(Ex: - $ tar -zxvf apache-tomcat-8.5.34.tar.gz)
 
+# to open the new terminal from the container 
+$ docker exec -it <container> bash
+
 #
 set JAVA_HOME environmemnt variable in $USER_HOME/.bashrc (i.e /root/.bashrc)
 
@@ -49,6 +52,9 @@ source ~/.bashrc
 	$ cd TOMCAT_HOME/bin
 	$ ./startup.sh
 
+(or we can run it using below command
+root@24fd9e5c2456:/# ./home/lakshmi/Distros1/apache-tomcat-8.5.41/bin/startup.sh )
+
 #
 Launch jenkins using below URL
 http://172.17.0.2:8080/jenkins
@@ -56,6 +62,7 @@ http://172.17.0.2:8080/jenkins
 #
 - When jenkins prompts for password, provide it and click on 'continue'
 	ex: cat /root/.jenkins/secrets/initialAdminPassword
+(root@24fd9e5c2456:~# cat /root/.jenkins/secrets/initialAdminPassword)
 
 - Select 'install all suggested plugin' in the 2nd screen
 
