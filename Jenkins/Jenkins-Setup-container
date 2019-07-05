@@ -48,6 +48,7 @@ source ~/.bashrc
 	$ cd $TOMCAT_HOME/webapps
 	$ wget <jenkins-url>
 ($ wget https://pkg.jenkins.io/debian-stable/binary/jenkins_2.176.1_all.deb)
+https://github.com/lakshmi86333/gamutdevopslakshmi.git
 
 # Start tomcat server. 
 	$ cd TOMCAT_HOME/bin
@@ -71,4 +72,20 @@ http://172.17.0.2:8080/jenkins
 	
 #
 Install Git and Maven after creating the project.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
