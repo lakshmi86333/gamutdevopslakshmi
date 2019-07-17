@@ -1,0 +1,31 @@
+Q: List of remotes for a Git repository?
+You can get a list of any configured remote URLs with the below command 
+$ git remote -v
+
+# List only the usernames or if we want to know how many users are there in linux machine?
+$cut -d: -f1 /etc/passwd
+
+or
+
+$ compgen -u
+
+#List all the connected users:
+$ who
+
+Q: If you want to change the password to linux user
+
+$ cd etc
+$ yogesh@52d93c40d19c:/etc$ passwd
+Changing password for yogesh.
+(current) UNIX password:
+
+Q: How to delete the user in linux machine
+# userdel -r vivek(username)
+
+url : https://www.cyberciti.biz/faq/userdel-user-vivek-is-currently-used-by-process-749-error-and-fix-on-linux/
+
+# command to switch back to root user from normal user
+$ su
+
+# switch back to normal user from root user
+$ su username
