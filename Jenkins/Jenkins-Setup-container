@@ -98,6 +98,15 @@ Changing password for yogesh.
 How to delete the user in linux machine
 # userdel -r vivek(username)
 
+url : https://www.cyberciti.biz/faq/userdel-user-vivek-is-currently-used-by-process-749-error-and-fix-on-linux/
+
+# command to switch back to root user from normal user
+$ su
+
+# switch back to normal user from root user
+$ su username
+
+
 
 
 
