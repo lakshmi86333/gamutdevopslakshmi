@@ -373,4 +373,35 @@ Qn: stash
 Qn: rebase
 
 
+********************************MY OWN NOTES ON GIT****************************************
+
+Q: List of remotes for a Git repository?
+You can get a list of any configured remote URLs with the below command 
+$ git remote -v
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

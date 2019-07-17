@@ -6,6 +6,10 @@ $ docker run -it --name jenkins-server-wk ubuntu /bin/bash
 2# Create an user
 $ useradd -m -d /home/gamut -s /bin/bash gamut
 
+(-m, --create-home             create the user's home directory
+-d, --home-dir HOME_DIR       home directory of the new account
+-s, --shell SHELL             login shell of the new account)
+
 3# Setup the password for gamut
 $ passwd gamut
 
@@ -72,6 +76,29 @@ http://172.17.0.2:8080/jenkins
 	
 #
 Install Git and Maven after creating the project.
+
+
+***************************************** My Additional notes ********************
+
+List only the usernames or if we want to know how many users are there in linux machine?
+$cut -d: -f1 /etc/passwd
+or
+$ compgen -u
+
+List all the connected users:
+$ who
+
+Q: If you want to change the password to linux user
+
+$ cd etc
+$ yogesh@52d93c40d19c:/etc$ passwd
+Changing password for yogesh.
+(current) UNIX password:
+
+How to delete the user in linux machine
+# userdel -r vivek(username)
+
+
 
 
 
