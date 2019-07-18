@@ -29,3 +29,30 @@ $ su
 
 # switch back to normal user from root user
 $ su username
+
+Q: How to check permissions of a specific directory?
+$ ls -ld directoryname
+$ ls -ld Distros
+
+# you see the permissions of all the files within the directory
+$ ls -l directoryname
+
+# Sometimes you don’t want to see the files within the directory; you just want to see just the permissions on the directory itself.
+$ ls -ld directoryname
+
+# To minimize all windows in Ubuntu 
+Ctrl+Superkey(windows)+D
+
+# how to move a file from one directory to another directory
+$ mv /Distros /home/lakshmi
+$ mv olddirectory newdirectory
+
+# copy the file from one directory to another directory
+$ cp /Distros /home/lakshmi
+
+Q: Difference between cp and mv commands?
+if we use cp command folder will copy to another directory but it will delete automaticlly
+but mv command it will move to another directory and folder will be deleted automatically.
+
+
+

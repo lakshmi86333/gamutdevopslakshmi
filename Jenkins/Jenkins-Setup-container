@@ -106,6 +106,9 @@ $ su
 # switch back to normal user from root user
 $ su username
 
+# to remove all files starts with tar.gz
+$ rm -rf *.gz
+
 
 
 

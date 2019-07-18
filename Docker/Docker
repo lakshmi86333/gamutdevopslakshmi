@@ -293,7 +293,7 @@ SETTING-UP NGINX SERVER ON UBUNTU MANUALLY:
  sudo apt-get update
  sudo apt-get install -y nginx
 
- start/stop/restart nginx server:
+ start/stop/restart nginx serveradded my_own_notes file to my repo:
 =========== 			
  sudo service nginx start
  			  nginx stop 
@@ -568,6 +568,17 @@ Run docker command without sudo.
 
 	5. Delete the group
 		$ sudo groupdel docker
+
+
+
+
+**********************************My Own Notes**************************
+
+# if we want to open open multiple terminals from container
+$ docker exec -it (containername/id) /bin/bash
+
+
+
 
 
 
