@@ -111,8 +111,8 @@ $ sudo docker run -it ubuntu /bin/bash
 
 
 - Create an user and set up password
-$ useradd -m -d /home/gamut -s /bin/bash gamut
-$ passwd gamut
+$ useradd -m -d /home/gamut -s /bin/bash gamut(username)
+$ passwd gamut(username)
 
 (my system credentials for useradd password:lakshmi)
 	
