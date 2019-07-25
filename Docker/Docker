@@ -64,7 +64,8 @@ Installation Steps:
 # Add GPG key to apt repository
 	$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-# Setup Stable repository (Add docker download URL manually to apt cache)
+# Setup Stable repository (Add docker download URL manually to apt cache
+)
 	$ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 	
 # Update apt package index:
@@ -242,6 +243,7 @@ DAY-3:
 	$ docker inspect -f '{{.NetworkSettings.Networks.bridge.IPAddress}}' tomcatserver1
 	
  Note: use --format (OR) -f  	
+
 
 
 - Remove all running containers
