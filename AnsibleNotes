@@ -1,0 +1,390 @@
+
+1. Controller Machine : 172.17.0.2
+2. Slave or Node Machine : 172.17.0.3 - Ubuntu
+			   172.17.0.4 - Ubuntu
+			   172.17.0.5 - Centos
+
+We will install Ansible in our controller machine:
+
+Ansible and Slave server configuration
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+*******************IN SLAVE MACHINE********************************************************************************************************************
+
+hostname -i  ---> 172.17.0.3 and 172.17.0.4
+
+apt-get update
+apt-get install vim -y
+apt-get install sudo -y
+
+useradd -m -d /home/ansadmin -s /bin/bash ansadmin
+passwd ansadmin
+
+apt-get install openssh-server
+service ssh start
+
+visudo
+ansadmin    ALL=(ALL:ALL) NOPASSWD:ALL
+
+vim /etc/ssh/sshd_config
+Line no: 56, uncomment --> PasswordAuthentication yes
+service ssh restart
+
+
+hostname -i  ---> 172.17.0.5
+
+yum update
+yum install vim sudo openssh-server
+
+*************In Controller Machine********************************************************************************************************************
+hostname -i  ---> 172.17.0.2
+
+apt-get update
+apt-get install vim -y
+apt-get install sudo -y
+
+wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -ivh epel-release-latest-7.noarch.rpm
+yum --enablerepo=epel install ansible
+ansible --version
+
+useradd -m -d /home/ansadmin -s /bin/bash ansadmin
+passwd ansadmin
+
+apt-get install openssh-server
+service ssh start
+
+visudo
+ansadmin    ALL=(ALL:ALL) NOPASSWD:ALL
+
+vim /etc/ssh/sshd_config
+Line no: 56, uncomment --> PasswordAuthentication yes
+service ssh restart
+
+
+su ansadmin
+cd ~
+ssh-keygen
+cat /home/ansadmin/.ssh/id_rsa.pub
+ssh-copy-id 172.17.0.3
+Now login to our slave (172.17.0.3) as ansadmin and check for .ssh folder and authorized_keys. Our Ansible controller key will show here.
+
+vim /etc/ansible/hosts
+[webserver]
+172.17.0.3
+-------------------------------------------------
+2. Ansible commands
+
+(a) To check ping
+
+ansible webserver -m ping
+    
+(b) To copy file from controller to slave
+
+Create a file name demo.txt and store in any location
+ansible webserver -m copy -a "src=/home/ansadmin/demo.txt dest=/home/ansadmin"
+
+(c) If inventort file is custom
+
+vim demo.txt
+172.17.0.3
+
+ansible all -i demo.txt -m ping
+
+where demo.txt contains out slave ip address and we use i for mentioning its a custom inventory file
+
+(d) If we want run ansible commands as a seperate user
+
+ansible webserver -u ansadmin -m ping -k
+
+where -u helps to specify user and -k will promt user password. ansadmin is the username and webserver is the slave group name.
+
+(e) To run any commands
+
+ansible webserver -m command -a "apt update" -b
+		(or)
+ansible webserver -m command -a "apt update" --become
+
+where -b or --become gives sudo privillege
+
+(f) To debug a output or ansible command
+
+ansible webserver -m ping -v  (or) ansible webserver -m ping -vv (or) ansible webserver -m ping -vvv
+where v is debug level 1 , vv is debug level 2 and vvv is debug level 3
+
+3. Ansible Inventory
+
+(a) 
+
+vim inventoryfile
+dbsever ansible_ssh_host=172.17.0.3 ansible_ssh_user=ansadmin ansible_ssh_pass=pass@123
+
+ansible db -i inventoryfile -m ping
+
+where db server is the group name and inventoryfile is the custom inventory file we can add this line in our ansible hosts file also.
+
+(b) To run ansible commands in multiple machines
+
+vim inventoryfile
+server1 ansible_ssh_host=172.17.0.3 ansible_ssh_user=ansadmin ansible_ssh_pass=pass@123
+server2 ansible_ssh_host=172.17.0.4 ansible_ssh_user=ansadmin ansible_ssh_pass=pass@123
+
+ansible all -i inventoryfile -m ping
+
+since its all our ansible command will run in all machines which we mentioned in our custom inventory file
+
+(c) To run ansible commands in groups
+
+vim inventoryfile
+server1 ansible_ssh_host=172.17.0.3 ansible_ssh_user=ansadmin ansible_ssh_pass=pass@123
+server2 ansible_ssh_host=172.17.0.4 ansible_ssh_user=ansadmin ansible_ssh_pass=pass@123
+[dbserver]
+server1
+
+[webserver]
+server2
+
+ansible dbserver -i inventoryfile -m ping
+
+where db server is the group name
+
+
+(d) To run ansible commands to a group which contains sub groups
+
+vim inventoryfile
+server1 ansible_ssh_host=172.17.0.3 ansible_ssh_user=ansadmin ansible_ssh_pass=pass@123
+server2 ansible_ssh_host=172.17.0.4 ansible_ssh_user=ansadmin ansible_ssh_pass=pass@123
+[dbserver]
+server1
+
+[webserver]
+server2
+
+[ubuntuserver:children]
+dbserver
+webserver
+
+ansible ubuntuserver -i inventoryfile -m ping
+
+where ubuntuserver is a group which contains group dbserver and webserver. We mentioned children along with the group name to give information to our ansible that inside this group sub groups are there else it will take webserver and dbserver as two seperate machines or slaves.
+
+(e) To run ansible commands by using variable
+
+vim inventoryfile 
+server1 ansible_ssh_host=172.17.0.3 
+server2 ansible_ssh_host=172.17.0.4
+[dbserver]
+server1
+
+[webserver]
+server2
+
+[ubuntuserver:children]
+dbserver
+webserver
+
+[ubuntuserver:vars]
+ansible_ssh_user=ansadmin
+ansible_ssh_pass=pass@123
+
+ansible ubuntuserver -i inventoryfile -m ping
+
+username and password will store as variable and pass when our ansible command runs.
+
+Output: 
+ansadmin@bb4e3b90faa5:~$ ansible ubuntuserver -i inventoryfile -m ping
+server1 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    }, 
+    "changed": false, 
+    "ping": "pong"
+}
+server2 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    }, 
+    "changed": false, 
+    "ping": "pong"
+}
+ansadmin@bb4e3b90faa5:~$ 
+
+4. Scaling out Ansible Inventory Files
+
+When we add systems, groups and variables in our inventory file, later our inventory file becomes complicated.
+
+It will be difficult to manage if more pupils work on this inventory file, it may contains duplcate group names or variables. It will be timie wasting one for fixing the issues.
+
+Finding the syntax error or mistakes will be another hectic problem.
+
+To rid from all these we will use Directories and this is the recpomended way for large infrastructure.
+
+We have two folders name production and test. In both of these directories contains one inventory file and two directories named group_vars and host_vars.
+
+
+
+
+
+5. Ansible Configuration Basics
+
+
+
+
+6. Ansible Modules
+
+Ansible modules are the building blocks that makes automation. With modules we can perform different actions on slaves or systems.
+
+Each module is used for a specific task. Its just like a command centre.
+
+Three kinds of modules
+
+(a) Core modules --- Modules that are supported by ansible
+(b) Extra modules --- Modules created by external communities or companies
+(c) Deprecated modules --- When a new module is going to replace it or a new module is more preffered. Ay some stage depreceted modules will be removed from distribution.
+
+ansible-doc -l  ---> To list all modules available in controller
+
+ansible-doc yum ---> to get more details about a module
+
+Some of the important modules:
+
+Copy Module : Copy a file from controller machine to remote machine. Can do validation remotely.
+
+Fetch Module: Pull a file from remote machine to controller machine. 
+
+Apt Module : Can install, update and delete packages and update entire system which is Debian based.
+
+Yum Module : Can install, update and delete packages and update entire system which is Redhat based.
+
+Service Module : Can start, stop and restart services and can also enable services to start on boot.
+
+
+* To Install a package on Redhat based machine
+ansible webserver -m yum -a "name=htpd state=present" -b
+
+
+* To start/stop/restart/enable a service 
+ansible webserver -m service -a "name=nginx enabled=yes state=started" --become
+ansible webserver -m service -a "name=nginx enabled=yes state=restarted" --become
+ansible webserver -m service -a "name=nginx enabled=yes state=stopped" --become
+
+
+* To view all details of a slave machine
+
+ansible webserver -m setup
+
+ansible webserver -m setup -a "filter=ansible_eth*"
+To view the IP address from setup output
+
+ansible ubuntuserver -i inventoryfile -m setup --tree ./setup
+Will create a folder named setup, if we go inside our slave machines details we can view by using cat commands.
+
+
+7. Playbooks
+
+Playbook contains one or more plays.
+
+Each play maps a host or a set of host to a task or a set of task.
+
+A play may contains multiple tasks.
+
+Playbooks are written in Yaml code. Yaml code starts with --- and ends with ...
+
+We should maintain indendation and spaces while creating our playbooks.
+
+Tasks in plays are executed from top to down order. and these tasks uses modules for its action.
+
+To executa a playbook we use ansible-playbook command. Eg: ansible-playbook playbook.yml  where playbook.yml is our yaml file.
+
+If a host fails a task while running a playbook, in that host the followe tasks wont happen. For example if our playbook contains 5 tasks and at third task we got an error, then ansible wont perform fourth and fifth tasks on that server. We need to fix that problem and run blaybook again.
+
+(a). Playbook to install Nginxn and Mysql in Centos
+vim centosapache.yml
+---
+- hosts: webserver
+  tasks:
+          - name: Install Nginx
+            yum: pkg=nginx state=latest
+
+            notify:
+                    - start nginx
+            handlers:
+                    - name: Start Nginx
+                      service: name=nginx enabled=yes state=started
+- hosts: dbserver
+  tasks:
+          - name: Ensure MYSQL is installed
+            yum: name=mysql-server state=present
+          - name: Start MYSQL service
+            service: name=mysqld state=started
+...
+
+ansible-playbook -s centosapache.yml
+
+Nginx package will install in our slave machines available in webserver and mysql will install on all slaves under dbserver group.
+Also both nginx and mysql service we started.
+
+(b) Playbook to install Nginx and zip in Ubuntu server
+
+vim ubuntunginx.yml
+---
+- hosts: webserver
+  tasks:
+          - name: APT
+            apt: name=nginx update_cache=yes state=latest
+
+          - name: Start Nginx service
+            service: name=nginx enabled=yes state=started
+
+          - name: Installing zip
+            apt: name=zip state=present
+...         
+
+ansible-playbook -b ubuntunginx.yml
+
+where -b to become sudo or we can use --become
+
+(C). Playbook for Condition
+
+vim nginxubuntu.yml
+---
+- hosts: webserver
+  tasks:
+          - name: APT
+            apt: name=nginx update_cache=yes state=latest
+            when: ansible_os_family == "Debian"
+
+          - name: Start Nginx service
+            service: name=nginx enabled=yes state=started
+            when: ansible_os_family == "Debian"
+
+          - name: Installing zip
+            yum: name=zip state=present
+            when: ansible_os_family == "RedHat"
+...
+
+if then nsible_os_family == "Debian" then this will command only run in Ubuntu.
+if ansible_os_family == "RedHat" then this command will run only in Centos / Redhat.
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
